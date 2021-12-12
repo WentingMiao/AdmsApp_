@@ -1,0 +1,23 @@
+[
+  {
+    "model": "account.Department",
+    "fields": {
+      "name": "Default",
+      "introduction": "System Set Default Department"
+    }
+  },
+  {
+    "model": "account.Position",
+    "fields": {
+      "name": "Default Position",
+      "introduction": "System Set Default Position"
+    }
+  },
+  {
+    "model": "account.University",
+    "fields": {
+      "name": "Default University",
+      "introduction": "System Set Default University"
+    }
+  }
+]
