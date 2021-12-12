@@ -1,0 +1,12 @@
+django-ckeditor
+django-cors-headers
+django-js-asset
+django-rest-framework == 0.1.0
+django-tables2
+djangorestframework
+Pillow
+PyMySQL
+pytz
+sqlparse
+asgiref
+setuptools
