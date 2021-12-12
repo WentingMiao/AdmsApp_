@@ -15,14 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from django.conf.urls import include
+from django.conf.urls import include,url
 from django.conf.urls.static import static
 from django.conf import settings
+from django.views.static import serve
 
 urlpatterns = [
-    path('', include("dashboard.urls")),
-    path('admin/', admin.site.urls),
-    path('activity/', include("activity.urls")),
-    path('account/', include("account.urls")),
-    path('dashboard/', include("dashboard.urls")),
-]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+                  path('', include("dashboard.urls")),
+                  path('admin/', admin.site.urls),
+                  path('activity/', include("activity.urls")),
+                  path('account/', include("account.urls")),
+                  path('dashboard/', include("dashboard.urls")),
+                  url(r'^media/(?P<path>.*)', serve, {"document_root": settings.MEDIA_ROOT})
+              ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

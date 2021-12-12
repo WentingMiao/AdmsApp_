@@ -159,15 +159,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 info.el.style.backgroundColor = 'grey';
                 
               }
-              else if(info.event.registered >= info.event.expected)
-                {
-                    info.el.style.backgroundColor = 'red';
-                    
-                }
+
                 else{
                     info.el.style.backgroundColor = 'green';
                     console.log(info.event.expected_number );
                     console.log(info.event.id );
+                }
+    if(info.event._def.extendedProps.registered >= info.event._def.extendedProps.expected)
+                {
+                    info.el.style.backgroundColor = 'red';
                 }
             }
   

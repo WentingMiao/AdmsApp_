@@ -1,6 +1,8 @@
 from django.forms import ModelForm,Textarea,CharField,TextInput,EmailInput,Select,PasswordInput
 from django.contrib.auth.models import User
-from .models import Accounts,Department
+from rest_framework.exceptions import ValidationError
+
+from .models import Accounts,Department,Position,University
 # department_choices = (('publicity','Publicity'),('security','Security'),('entertainment','Entertainment'),('secretary','Secretary'),('volunteer','Volunteer'),('journalist','Journalist'))
 
 class AccountsForm(ModelForm):
@@ -16,8 +18,10 @@ class AccountsForm(ModelForm):
             'name':TextInput(attrs={'class':'form-control',}),
             # 'department':TextInput(attrs={'class':'form-control',}),
             'department':Select(choices=Department.objects.all(),attrs={'class':'form-control',}),
-            'position':TextInput(attrs={'class':'form-control',}),
-            'uni':TextInput(attrs={'class':'form-control'}),
+            'position': Select(choices=Position.objects.all(), attrs={'class': 'form-control', }),
+            'uni': Select(choices=University.objects.all(), attrs={'class': 'form-control', }),
+            # 'position':TextInput(attrs={'class':'form-control',}),
+            # 'uni':TextInput(attrs={'class':'form-control'}),
             'phone_number':TextInput(attrs={'class':'form-control',}),
             'email':EmailInput(attrs={'class':'form-control',}),
         }

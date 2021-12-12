@@ -1,0 +1,35 @@
+.md-camera {
+    width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cameraImg {
+    width: 100%;
+}
+
+.mp_cc {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.the_img_div {
+    height: 700px;
+    width: 100%;
+    position: relative;
+    text-align: center;
+}
+
+.the_v_img {
+    position: absolute;
+    max-height: 700px;
+    min-height: 200px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
