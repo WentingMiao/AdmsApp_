@@ -1,0 +1,72 @@
+{% extends '../base/index.html'%}
+{% load django_tables2 %}
+
+{% block content_header %}
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Documents</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="/">Home</a></li>
+              <li class="breadcrumb-item ">Documents</li>
+              <li class="breadcrumb-item active">Profile</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}
+
+{% block main_content %}  
+  <div class="content">
+      <div class="container-fluid">
+        <div class="card">
+    
+    
+    <div class="card-body">
+     <div class='row'>
+     
+       <div class="col-sm-12 col-sm-12 col-md-6 mb-3 ">  
+            <form method='post' action='{% url "profile_upload" %}' enctype="multipart/form-data">
+                {% csrf_token %}
+                   <input type="file"   name="profileUpload"  accept="application/pdf"/>
+                    {% comment %} <label class="btn btn-info" style='width:150px;height:40px'>
+                      profile upload
+                     <input type="file" style='opacity: 0;'  name="profileUpload" id="fileToUpload"/> 
+                    </label> {% endcomment %}
+                  
+                   {% comment %} <a class='btn btn-primary' href='{% url 'profile_upload' %}'>Upload profile</a> {% endcomment %}
+                  <input type='submit'class='btn-sm btn-info'/>
+            </form>
+        </div>
+
+
+       <div class="col-sm-12 col-sm-12 offset-md-3 col-md-3 mb-3 ">
+            
+           <form class="form-inline ml-3" method='GET' action='{% url "activities" %}'>
+              <div class="input-group input-group-sm">
+                <input class="form-control form-control-navbar" name ='content' type="search" placeholder="search" aria-label="Search" value='{{content}}'>
+                <div class="input-group-append">
+                 <button class="btn btn-navbar" type="submit">
+                 <i class="fas fa-search"></i>
+                 </button>
+                </div>
+             </div>
+           </form> 
+
+        </div>
+     </div>
+     
+      
+    {% render_table table %}
+    
+    </div>
+        
+</div>
+      </div>
+</div>
+
+{% endblock %}

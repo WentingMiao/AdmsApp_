@@ -1,0 +1,120 @@
+{% extends '../base/index.html'%}
+{% load django_tables2 %}
+
+{% block content_header %}
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Activities</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="/">Home</a></li>
+              <li class="breadcrumb-item active">Activity</li>
+              <li class="breadcrumb-item active">{{activity.title}}</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}
+
+{% block main_content %}  
+<div class="content">
+    <div class="container-fluid">
+      <div class="row d-flex justify-content-center " >
+            <div class="card col-11">
+                <div class="card-header">
+              
+                {% if edit %}
+                    <h3 class="card-title "> Edit activity</h3>
+                {% else %}
+                    <h3 class="card-title "> Create activity</h3>
+                {% endif %}
+                    <div class="card-tools">    
+                       
+                        
+                    </div>
+                </div>
+                {% if edit %}
+                <form action={% url "activity_edit" pk=activity.pk %} method='post' enctype="multipart/form-data">
+                {% else %}
+                <form action='{% url "activityCreate" %}' method='post' enctype="multipart/form-data">
+                {% endif %}
+                    {% csrf_token %}
+                <div class="card-body">
+                    <div class='row d-flex justify-content-center'>
+                        <div class='col-8 m-1'>
+                            
+                                {% for field in form %}
+                                 <div class="form-group row">
+                                    <label for="{{field.id_for_label}}" class="col-4 col-form-label">{{field.label}}:</label>
+                                    <div class="col-8">
+                                    {{field}}
+                                    {{field.help_text}}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="card-footer">
+                     <input type="submit"  class="btn btn-primary float-right editor-style" id="createBtn" value="Save" />  
+                </div>
+                </form>
+            </div>
+
+      </div>
+    </div>
+</div>
+    
+{% endblock %}
+{% block external_style %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'plugins/daterangepicker/daterangepicker.css' %}">
+{% endblock %}
+{% block externalScript %}
+{% load static %}
+
+<script src="{% static 'plugins/moment/moment.min.js' %}"></script>
+<script src="{% static 'plugins/daterangepicker/daterangepicker.js' %}"></script>
+
+{% endblock %}
+
+{% block staticfile_script %}
+
+$(function() {
+  $('input[name="hold_time"]').daterangepicker({
+    singleDatePicker: true,
+    showDropdowns: true,
+    minYear: 2021,
+    maxYear: parseInt(moment().format('YYYY'),10),
+    locale: {
+      format: 'YYYY-MM-DD'
+     
+    }
+  }, function(start, end, label) {
+    {% comment %} can do something  {% endcomment %}
+  });
+    $('input[name="deadline"]').daterangepicker({
+    singleDatePicker: true,
+    showDropdowns: true,
+    timePicker:true,
+    minYear: 2021,
+    maxYear: parseInt(moment().format('YYYY'),10),
+    locale: {
+      format: 'YYYY-MM-DD hh:mm:ss'
+     
+    }
+  }, function(start, end, label) {
+      
+    {% comment %} can do something  {% endcomment %}
+  });
+
+
+});
+
+{% endblock %}

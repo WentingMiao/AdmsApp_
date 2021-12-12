@@ -1,0 +1,201 @@
+
+{% extends '../base/index.html'%}
+{% load static %}
+{% load django_tables2 %}
+{% block external_style %}
+  <link rel="stylesheet" href="{% static 'plugins/fullcalendar/main.min.css' %}">
+  <link rel="stylesheet" href="{% static 'plugins/fullcalendar/main.css' %}">
+
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+{% endblock %}
+
+{% block content_header %}
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Calendar</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="/">Home</a></li>
+              <li class="breadcrumb-item active">Activity</li>
+              <li class="breadcrumb-item active">Calendar</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}
+
+
+
+{% block main_content %}
+
+<section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-2">
+            <div class="sticky-top mb-3">
+              <div class="card">
+                <div class="card-header">
+                  <h4 class="card-title">Information</h4>
+                </div>
+                <div class="card-body">
+                {% for i in events %}
+                {{i.expected_number}}
+                {% endfor %}
+                        <a class="text-danger" ><i class="fas fa-square"></i></a> :Full <br>
+                        <a class="text-success" ><i class="fas fa-square"></i></a> :Avaiable <br>
+                        <a class="text-grey" ><i class="fas fa-square"></i></a> :Invalid <br>
+                    
+
+                  <!-- the events -->
+                  {% comment %} <div id="external-events">
+                    <div class="external-event bg-success ui-draggable ui-draggable-handle" style="position: relative; z-index: auto; left: 0px; top: 0px;">Lunch</div>
+                    <div class="external-event bg-warning ui-draggable ui-draggable-handle" style="position: relative; z-index: auto; left: 0px; top: 0px;">Go home</div>
+                    <div class="external-event bg-info ui-draggable ui-draggable-handle" style="position: relative;">Do homework</div>
+                    <div class="external-event bg-primary ui-draggable ui-draggable-handle" style="position: relative; z-index: auto; left: 0px; top: 0px;">Work on UI design</div>
+                    <div class="external-event bg-danger ui-draggable ui-draggable-handle" style="position: relative; z-index: auto; left: 0px; top: 0px;">Sleep tight</div>
+                    <div class="checkbox">
+                      <label for="drop-remove">
+                        <input type="checkbox" id="drop-remove">
+                        remove after drop
+                      </label>
+                    </div>
+                  </div> {% endcomment %}
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title"> Management</h3>
+                </div>
+                <div class="card-body">
+                  <a class='btn btn-primary' style="width: 100%; margin-bottom: 10px;" href='{% url 'activityCreate' %}'>Create </a>
+                 <a class='btn btn-success' style="width: 100%; margin-bottom: 10px;" href='{% url 'activities' %}'>Detail </a>
+                
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-md-10">
+            <div class="card card-primary">
+              <div class="card-body p-0">
+                <!-- THE CALENDAR -->
+                <div id="calendar"></div>
+                
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+
+            <!--list calendar-->
+            <div class='card card-primary'>
+                <div class="card-body p-0">
+                    <div id='listCalendar'>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+{% endblock %}
+
+
+
+{% block externalScript %}
+
+<script src="{% static 'plugins/moment/moment.min.js' %}"></script>
+<script src="{% static 'plugins/fullcalendar/main.min.js' %} "></script>
+<script src="{% static 'plugins/fullcalendar/main.js' %} "></script>
+
+<script src="{% static 'plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+
+{% endblock %}
+
+{% block staticfile_script %}
+
+document.addEventListener('DOMContentLoaded', function() {
+        var calendarEI = document.getElementById('calendar');
+        var listCalendarEI = document.getElementById('listCalendar');
+        var calendar = new FullCalendar.Calendar(calendarEI, {
+          initialView: 'dayGridMonth',
+          editable: true,
+          eventLimit: true,
+          
+          events: [
+                {% for i in activities %}
+                   {
+                    title: '{{i.title}}',
+                    start: ' {{ i.hold_time|date:"Y-m-d" }}',
+                    id:{{i.pk}},
+                    expected: {{i.expected_number}},
+                    registered: {{i.registered_members.count}},
+                    
+                
+                }, 
+               
+                {% endfor %}
+               
+                ],
+          eventClick: function(info) 
+           {
+              window.open("/activity/details/"+info.event.id);
+             {% comment %} window.location.href = "/activity/details/"+info.event.id; {% endcomment %}
+            }, 
+          eventDidMount: function(info) 
+           {
+              var todayDate = new Date();
+              if(info.event.start < todayDate)
+              {
+                // Change background color of row
+                info.el.style.backgroundColor = 'grey';
+                
+              }
+              else if(info.event.registered >= info.event.expected)
+                {
+                    info.el.style.backgroundColor = 'red';
+                    
+                }
+                else{
+                    info.el.style.backgroundColor = 'green';
+                    console.log(info.event.expected_number );
+                    console.log(info.event.id );
+                }
+            }
+  
+        });
+
+        
+
+
+        var listCalendar = new FullCalendar.Calendar(listCalendarEI, {
+          initialView: 'listWeek',
+          
+          events: [
+                {% for i in activities %}
+                   {
+                    title: '{{i.title}}',
+                    start: ' {{ i.hold_time|date:"Y-m-d" }}',
+                    
+                }, 
+               
+                {% endfor %}
+               
+                ],
+        
+        });
+        calendar.render();
+        listCalendar.render();
+});
+
+
+  
+{% endblock %}
